@@ -1,0 +1,23 @@
+{
+  "name": "@safe-trading/monorepo",
+  "version": "1.0.0",
+  "description": "Safe Trading",
+  "main": "index.js",
+  "repository": "https://github.com/Benjamin-Herald/safe-trading",
+  "author": "Benjamin Herald",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+  	"packages": [
+   "packages/*"
+   	]
+   },
+   "scripts": {    
+	  "start": "yarn ",    
+	  "build": "yarn ",
+	  "push": "git push -u originsafetrading master",
+	  "gitcreate": "git remote add originsafetrading https://github.com/Benjamin-Herald/safe-trading",
+	  "commit": "git commit -a -S -m",
+	  "githubcleartoken": "git config --global --unset credential.helper"
+   }
+}
