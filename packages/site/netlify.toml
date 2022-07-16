@@ -1,8 +1,7 @@
 [build]
-  base = “packages/site/”
-  functions = "src/functions/"
+  base = "packages/site/"
+  functions = "packages/site/src/functions/"
   command = "npm run build"
-
 
 [[redirects]]
   from = '/api/*'
