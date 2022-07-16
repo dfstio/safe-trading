@@ -99,7 +99,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build --max-old-space-size=5000000",
     "test": "react-app-rewired --env=jsdom",
     "less": "lessc --js src/styles/wieldy.less public/css/style.css && lessc --js src/styles/wieldy.less public/css/style.min.css --compress -x",
     "balance": "cd ../paymaster && npx  hardhat run scripts/balance.js --network mumbai",

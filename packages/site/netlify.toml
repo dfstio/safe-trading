@@ -1,5 +1,8 @@
+
 [build]
+  base = “packages/site/”
   functions = "src/functions/"
+  command = "npm run build"
 
 
 [[redirects]]

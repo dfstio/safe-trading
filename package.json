@@ -13,8 +13,6 @@
    	]
    },
    "scripts": {    
-	  "start": "yarn ",    
-	  "build": "yarn ",
 	  "push": "git push -u originsafetrading master",
 	  "gitcreate": "git remote add originsafetrading https://github.com/Benjamin-Herald/safe-trading",
 	  "commit": "git commit -a -S -m",
