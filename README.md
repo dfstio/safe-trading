@@ -25,8 +25,11 @@ https://mumbaifaucet.com/
 
 ## Contracts
 
-LETH contract is deployed to mumbai network at address 
+LETH contract is deployed to mumbai network at address 0x49B8d4DFDB48023E8637d39BD97F813648b3E44e
 
+
+## UNISWAP
+https://app.uniswap.org/#/swap?chain=polygon_mumbai
 
 ## TODO
 - aave interface

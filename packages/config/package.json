@@ -1,0 +1,9 @@
+{
+  "name": "@safe-trading/config",
+  "version": "1.0.0",
+  "description": "configuration for safe trading",
+  "main": "config.js",
+  "author": "Benjamind Herald",
+  "license": "MIT",
+  "private": true
+}
