@@ -1,6 +1,7 @@
 [build]
   base = "packages/site/"
   functions = "src/functions/"
+  
 
 [[redirects]]
   from = '/api/*'
