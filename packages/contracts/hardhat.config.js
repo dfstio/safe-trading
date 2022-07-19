@@ -79,6 +79,7 @@ module.exports = {
       //"https://rpc-mainnet.maticvigil.com/",
       chainId: 5,
       gas:"auto",
+      gasPrice: 2e9,
       gasMultiplier:2,
       accounts: [privateKey]
     },
@@ -102,6 +103,7 @@ module.exports = {
       url: RPC_MUMBAI,
       chainId: 80001, 
       gas:"auto",
+      gasPrice: 60000000000,
       gasMultiplier:2,
       forwarder:  0x4d4581c01A457925410cd3877d17b2fd4553b2C5,
       accounts: [privateKey]

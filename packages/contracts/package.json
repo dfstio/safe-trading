@@ -19,18 +19,25 @@
     "hardhat-contract-sizer": "^2.5.1"
   },
   "dependencies": {
-    "@safe-trading/config": "1.0.0",
     "@openzeppelin/contracts": "^4.6.0",
     "@openzeppelin/contracts-upgradeable": "^4.5.2",
-    "chalk": "^5.0.0"
+    "@safe-trading/config": "1.0.0",
+    "@uniswap/sdk-core": "^3.0.1",
+    "@uniswap/v3-sdk": "^3.9.0",
+    "axios": "^0.27.2",
+    "chalk": "^5.0.0",
+    "fs": "^0.0.1-security"
   },
   "scripts": {
     "balance": "hardhat balance --network l3 0x07171714bE2b2e12B4F38270d446fB8bc82bb767",
     "archive": "git archive -o list-contracts.zip HEAD",
     "compile": "hardhat compile",
-    "deployleth": "hardhat run --network mumbai scripts/deployleth.js",
+    "deployltoken": "hardhat run --network mumbai scripts/deployltoken.js",
+    "uniswap": "hardhat run --network mumbai scripts/uniswap.js",
+    "deploywtoken": "hardhat run --network goerli scripts/deploywtoken.js",
     "accounts": "hardhat accounts",
-    "verifyleth": "hardhat verify --contract contracts/lusd.sol:LUSD --network mumbai 0x77a766AB84501872F023DD084901e674310d582d 1000000000000000000000000",
+    "verifyltoken": "hardhat verify --network mumbai 0x7F1008eD6e7AB704E9f9111Ee3866a3D562007b0 \"Safe Trading USD\" LUSD 1000000000000000000000000000",
+    "verifywtoken": "hardhat verify --network goerli 0xD3c8470A6c15404094410895f3d7D8CB3DFB0733 WUSD WUSD 1000000000000000000000000000",
     "test": "echo \"Error: no test specified\" && exit 1",
     "size": "hardhat size-contracts",
     "abi": "hardhat export-abi"
