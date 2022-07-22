@@ -10,6 +10,7 @@ const LJSON = require("@safe-trading/contracts/abi/contracts/ltoken.sol/LERC20.j
 // Uniswap
 const { TickMath, encodeSqrtRatioX96, Position, Pool, nearestUsableTick, toHex, NonfungiblePositionManager } =  require('@uniswap/v3-sdk');
 const { Percent, Token }  =  require('@uniswap/sdk-core');
+const UNISWAP_NFT = "0xc36442b4a4522e871399cd717abdd847ab11fe88";
 //const currencies = ["USD", "EUR", "ETH", "BTC", "GLD", "MTL"];
 const prices = [1, 1.01, 1422, 22017, 1704, 1704];
 
@@ -60,7 +61,7 @@ async function main() {
   		console.log("Approving ", token.token, "...");
 		const contract = new ethers.Contract(token.address, LJSON, signer);
 		gas = await getGas();
-		const tx = await contract.approve("0xc36442b4a4522e871399cd717abdd847ab11fe88",
+		const tx = await contract.approve(UNISWAP_NFT,
 										  "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
 									{gasLimit: 100000, 
 									 maxFeePerGas: gas.maxFeePerGas, 
@@ -116,7 +117,7 @@ async function main() {
 	  				gas = await getGas();
 					let txn = {
 					   from: TRADER_ADDRESS,
-					   to: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+					   to: UNISWAP_NFT,
 					   data: calldata,
 					   value,
 					   chainId: 80001,
