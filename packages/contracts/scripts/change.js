@@ -11,6 +11,8 @@ const LJSON = require("@safe-trading/contracts/abi/contracts/ltoken.sol/LERC20.j
 const { TickMath, encodeSqrtRatioX96, Position, Pool, nearestUsableTick, toHex, NonfungiblePositionManager } =  require('@uniswap/v3-sdk');
 const { Percent, Token }  =  require('@uniswap/sdk-core');
 const UNISWAP_NFT = "0xc36442b4a4522e871399cd717abdd847ab11fe88";
+const UNISWAP_NFT_JSON = require('@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json');
+
 
 const prices = [1, 1.01, 1422, 22017, 1704, 1704];
 
@@ -45,14 +47,79 @@ async function getGas()
 }
 
 async function main() {
+	let gas;
 	const wallet = new ethers.Wallet(TRADER_KEY);
 	const signer = wallet.connect(ethers.provider);
 	const traderBalance = await ethers.provider.getBalance(TRADER_ADDRESS);
     console.log("Trader address:", TRADER_ADDRESS, "with balance", (traderBalance/1e18).toFixed(4));
+    const uniswap = new ethers.Contract(UNISWAP_NFT, UNISWAP_NFT_JSON.abi, signer);
+    
+    const positionsNumber = await uniswap.balanceOf(TRADER_ADDRESS);
+    console.log("Trader positions:", positionsNumber.toString());
 
+	let p;
+	for( p = positionsNumber - 1; p >= 0; p--) 
+  	{	
+		    const tokenId = await uniswap.tokenOfOwnerByIndex(TRADER_ADDRESS, p);
+		    const position = await uniswap.positions(tokenId);
+    		console.log("position:", p, "tokenid", tokenId.toString(), "liquidity", position.liquidity.toString());
+    		if( position.liquidity.toString() !== "0")
+    		{
+    			  try {
+					  gas = await getGas();
+					  const startTime =  Date.now();
+					  const deadline = startTime + 1000 * 60 * 30;
+			
+				  
+					  let tx = await uniswap.decreaseLiquidity({
+									   tokenId,
+									   liquidity: position.liquidity.toString(),
+									   amount0Min: position.tokensOwed0,
+									   amount1Min: position.tokensOwed1,
+									   deadline
+
+						  },
+						  {gasLimit: 200000, 
+						   maxFeePerGas: gas.maxFeePerGas, 
+						   maxPriorityFeePerGas: gas.maxPriorityFeePerGas}
+	
+						  );
+					  console.log("tx hash", tx.hash);
+					  let receipt = await tx.wait(2);
+					  console.log('tx block:', receipt.blockNumber);
+					   
+					  gas = await getGas();
+
+					  tx = await uniswap.collect({
+									   tokenId,
+									   recipient: TRADER_ADDRESS,
+									   liquidity: position.liquidity.toString(),
+									   amount0Max: "0xffffffffffffffffffffffffffffffff",
+									   amount1Max: "0xffffffffffffffffffffffffffffffff"
+						  },
+						  {gasLimit: 150000, 
+						   maxFeePerGas: gas.maxFeePerGas, 
+						   maxPriorityFeePerGas: gas.maxPriorityFeePerGas}
+	
+						  );
+					   console.log("tx hash", tx.hash);
+					   receipt = await tx.wait(2);
+					   console.log('tx block:', receipt.blockNumber);
+
+				   } catch (error) {
+						   console.error("catch uniswap", error.toString().substr(0,500));
+
+				   };	
+			};
+			
+	};
+	
+	return;
     let i;
     let k;
-    let gas;
+    
+    
+    
     
 	
 	for(j = 0; j < tokens.length ; j++) // tokens.length
@@ -142,6 +209,34 @@ async function main() {
 
 	return;
 }
+
+			/*
+			
+			   		const positionSDK = new Position({
+				   pool,
+				   liquidity: position.liquidity.toString(),
+				   tickLower: position.tickLower,
+				   tickUpper: position.tickUpper,
+				 })
+    		
+    		const liquidityPercentage = new Percent(100, 100)
+    		const allowedSlippage = new Percent(5, 1000);
+
+    		const { calldata, value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
+						tokenId: tokenId.toString(),
+						liquidityPercentage,
+						slippageTolerance: allowedSlippage,
+						deadline: deadline.toString(),
+						collectOptions: {
+						  expectedCurrencyOwed0: position.tokensOwed0,
+						  expectedCurrencyOwed1: position.tokensOwed1,
+						  recipient: TRADER_ADDRESS,
+						},
+					  })
+							  removeCallParameters(position, options: RemoveLiquidityOptions)
+    		*/
+
+
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.

@@ -12,7 +12,7 @@ const { TickMath, encodeSqrtRatioX96, Position, Pool, nearestUsableTick, toHex, 
 const { Percent, Token }  =  require('@uniswap/sdk-core');
 const UNISWAP_NFT = "0xc36442b4a4522e871399cd717abdd847ab11fe88";
 
-const prices = [1, 1.01, 1422, 22017, 1704, 1704];
+const prices = [1, 1.02, 1542, 22756, 1725, 1725];
 
 
 async function getGas()
@@ -68,6 +68,7 @@ async function main() {
 							 		  maxPriorityFeePerGas: gas.maxPriorityFeePerGas});
 		await tx.wait(2);	
 	};
+
     
 	for( k = 0; k < tokens.length - 1; k++) //tokens.length - 1
   	{	
@@ -111,7 +112,7 @@ async function main() {
 							 recipient: TRADER_ADDRESS,
 							 deadline: deadline.toString(),
 							 useNative: null,
-							 createPool: true,
+							 createPool: true
 						   })
 
 	  				gas = await getGas();
@@ -139,8 +140,9 @@ async function main() {
 		};
 	};
 
+	const traderBalance2 = await hre.ethers.provider.getBalance(owner);
+    console.log("Trader balance:", (traderBalance2/1e18).toFixed(4), "was spent:", ((traderBalance-traderBalance2)/1e18).toFixed(4) );
 
-	return;
 }
 
 // We recommend this pattern to be able to use async/await everywhere
